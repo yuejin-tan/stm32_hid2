@@ -1,1 +1,1 @@
-../Core/Src/bsp_init.c:17:6:bsp_init_scd	24	static,ignoring_inline_asm
+../Core/Src/bsp_init.c:17:6:bsp_init_scd	16	static,ignoring_inline_asm

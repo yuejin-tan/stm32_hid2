@@ -16,9 +16,9 @@
   *
   ******************************************************************************
   */
-  /* USER CODE END Header */
+/* USER CODE END Header */
 
-  /* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
 
@@ -26,21 +26,20 @@
 extern "C" {
 #endif
 
-  /* Includes ------------------------------------------------------------------*/
+/* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx_hal.h"
 
 #include "stm32h7xx_ll_dma.h"
+#include "stm32h7xx_ll_usart.h"
 #include "stm32h7xx_ll_rcc.h"
-#include "stm32h7xx_ll_crs.h"
 #include "stm32h7xx_ll_bus.h"
-#include "stm32h7xx_ll_system.h"
-#include "stm32h7xx_ll_exti.h"
 #include "stm32h7xx_ll_cortex.h"
+#include "stm32h7xx_ll_system.h"
 #include "stm32h7xx_ll_utils.h"
 #include "stm32h7xx_ll_pwr.h"
-#include "stm32h7xx_ll_spi.h"
-#include "stm32h7xx_ll_usart.h"
 #include "stm32h7xx_ll_gpio.h"
+
+#include "stm32h7xx_ll_exti.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -63,26 +62,26 @@ extern "C" {
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
-  void Error_Handler(void);
+void Error_Handler(void);
 
-  /* USER CODE BEGIN EFP */
+/* USER CODE BEGIN EFP */
 
-  /* USER CODE END EFP */
+/* USER CODE END EFP */
 
-  /* Private defines -----------------------------------------------------------*/
-#define ETH_RST_Pin LL_GPIO_PIN_5
+/* Private defines -----------------------------------------------------------*/
+#define ETH_RST_Pin GPIO_PIN_5
 #define ETH_RST_GPIO_Port GPIOA
-#define LED_0_Pin LL_GPIO_PIN_0
+#define LED_0_Pin GPIO_PIN_0
 #define LED_0_GPIO_Port GPIOB
-#define OLED_RST_Pin LL_GPIO_PIN_9
+#define OLED_RST_Pin GPIO_PIN_9
 #define OLED_RST_GPIO_Port GPIOE
-#define OLED_DC_Pin LL_GPIO_PIN_10
+#define OLED_DC_Pin GPIO_PIN_10
 #define OLED_DC_GPIO_Port GPIOE
-#define LED_1_Pin LL_GPIO_PIN_13
+#define LED_1_Pin GPIO_PIN_13
 #define LED_1_GPIO_Port GPIOE
-#define EEPROM_SCL_Pin LL_GPIO_PIN_10
+#define EEPROM_SCL_Pin GPIO_PIN_10
 #define EEPROM_SCL_GPIO_Port GPIOB
-#define FLASH_CS_Pin LL_GPIO_PIN_3
+#define FLASH_CS_Pin GPIO_PIN_3
 #define FLASH_CS_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
@@ -93,7 +92,7 @@ extern "C" {
   extern uint32_t test4;
   extern float test5;
 
-  /* USER CODE END Private defines */
+/* USER CODE END Private defines */
 
 #ifdef __cplusplus
 }
