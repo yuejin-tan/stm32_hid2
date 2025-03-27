@@ -1,0 +1,2 @@
+../Core/Src/usart.c:29:6:MX_USART1_UART_Init	80	static,ignoring_inline_asm
+../Core/Src/usart.c:132:6:MX_USART2_UART_Init	72	static,ignoring_inline_asm
