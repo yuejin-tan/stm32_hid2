@@ -31,8 +31,8 @@ extern "C"
 #define SCD_MAX_NUMS_PER_FRAME 1001
 /// 最大DUMP长度
 #define SCD_MAX_DUMP_COUNT 32000
-/// print函数的缓冲区大小，现在最大39字符
-#define SCD_PRINTBUFF_SIZE 40
+/// print函数的缓冲区大小，现在最大127字符
+#define SCD_PRINTBUFF_SIZE 128
 
 /// 是否加入针对TI DSP的ramfuncs声明
 #define SCD_IF_USE_RAM_FUNCS 0

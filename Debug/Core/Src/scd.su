@@ -16,3 +16,4 @@
 ../Core/Src/scd.c:724:6:SCD_Rev1Byte	16	static
 ../Core/Src/scd.c:1208:10:scd_send1Byte	8	static
 ../Core/Src/scd.c:1232:10:scd_print	4	static
+../Core/Src/scd.c:1256:10:scd_print2	4	static

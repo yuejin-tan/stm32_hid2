@@ -17,8 +17,8 @@
 #define MEM_MACRO "ramfuncs"
 #endif
 
-// 为保证表现一致，不使用标准C库
-/* _cz_strtoxl macro */
+ // 为保证表现一致，不使用标准C库
+ /* _cz_strtoxl macro */
 #define IFL_NEG 1
 #define IFL_READDIGIT 2
 #define IFL_OVERFLOW 4
@@ -320,9 +320,9 @@ const uint32_t cz_ctype[256] = {
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(_cz_strtoxl, MEM_MACRO);
 #endif
-static uint32_t _cz_strtoxl(const char *nptr, const char **endptr, int ibase, int flags)
+static uint32_t _cz_strtoxl(const char* nptr, const char** endptr, int ibase, int flags)
 {
-    const char *p;
+    const char* p;
     char c;
     uint32_t number;
     uint32_t digval;
@@ -405,7 +405,7 @@ static uint32_t _cz_strtoxl(const char *nptr, const char **endptr, int ibase, in
         flags |= IFL_READDIGIT;
 
         if (number < maxval || (number == maxval &&
-                                (uint32_t)digval <= maxval))
+            (uint32_t)digval <= maxval))
         {
             number = number * ((uint32_t)ibase) + digval;
         }
@@ -436,9 +436,9 @@ static uint32_t _cz_strtoxl(const char *nptr, const char **endptr, int ibase, in
         number = 0;
     }
     else if ((flags & IFL_OVERFLOW) ||
-             (!(flags & IFL_UNSIGNED) &&
-              (((flags & IFL_NEG) && (number > limit)) ||
-               (!(flags & IFL_NEG) && (number > limit - 1)))))
+        (!(flags & IFL_UNSIGNED) &&
+            (((flags & IFL_NEG) && (number > limit)) ||
+                (!(flags & IFL_NEG) && (number > limit - 1)))))
     {
         if (flags & IFL_UNSIGNED)
             number = maxu32;
@@ -460,7 +460,7 @@ static uint32_t _cz_strtoxl(const char *nptr, const char **endptr, int ibase, in
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(cz_atol, MEM_MACRO);
 #endif
-static int32_t cz_atol(const char *nptr)
+static int32_t cz_atol(const char* nptr)
 {
     return (int32_t)_cz_strtoxl(nptr, 0, 10, 0);
 }
@@ -486,9 +486,9 @@ static float _atof_pow10(float data, int exp)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(atof_tyj, MEM_MACRO);
 #endif
-static float atof_tyj(const char *chrIn)
+static float atof_tyj(const char* chrIn)
 {
-    const char *nextCharPtr = NULL;
+    const char* nextCharPtr = NULL;
     float decPart = 0;
     float ret = 0;
     int ePart = 0;
@@ -543,33 +543,33 @@ static float atof_tyj(const char *chrIn)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCD_CMD_SET, MEM_MACRO);
 #endif
-static void SCD_CMD_SET(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *paraPtr, int16_t targetNum)
+static void SCD_CMD_SET(struct SCD_CTRL_STRUCT* scd, volatile unsigned char* paraPtr, int16_t targetNum)
 {
-    const struct TYJ_UNIT_STRUCT *SCD_DATA_STRUCT_tab = scd->_unit_struct;
+    const struct TYJ_UNIT_STRUCT* SCD_DATA_STRUCT_tab = scd->_unit_struct;
     if (SCD_DATA_STRUCT_tab[targetNum]._type == TYJ_float)
     {
-        volatile float *xtemp = (float *)(void *)SCD_DATA_STRUCT_tab[targetNum]._addr;
-        *xtemp = atof_tyj((const char *)paraPtr);
+        volatile float* xtemp = (float*)(void*)SCD_DATA_STRUCT_tab[targetNum]._addr;
+        *xtemp = atof_tyj((const char*)paraPtr);
     }
     if (SCD_DATA_STRUCT_tab[targetNum]._type == TYJ_uint16_t)
     {
-        volatile uint16_t *xtemp = (uint16_t *)(void *)SCD_DATA_STRUCT_tab[targetNum]._addr;
-        *xtemp = cz_atol((const char *)paraPtr);
+        volatile uint16_t* xtemp = (uint16_t*)(void*)SCD_DATA_STRUCT_tab[targetNum]._addr;
+        *xtemp = cz_atol((const char*)paraPtr);
     }
     if (SCD_DATA_STRUCT_tab[targetNum]._type == TYJ_int16_t)
     {
-        volatile int16_t *xtemp = (int16_t *)(void *)SCD_DATA_STRUCT_tab[targetNum]._addr;
-        *xtemp = cz_atol((const char *)paraPtr);
+        volatile int16_t* xtemp = (int16_t*)(void*)SCD_DATA_STRUCT_tab[targetNum]._addr;
+        *xtemp = cz_atol((const char*)paraPtr);
     }
     if (SCD_DATA_STRUCT_tab[targetNum]._type == TYJ_uint32_t)
     {
-        volatile uint32_t *xtemp = (uint32_t *)(void *)SCD_DATA_STRUCT_tab[targetNum]._addr;
-        *xtemp = cz_atol((const char *)paraPtr);
+        volatile uint32_t* xtemp = (uint32_t*)(void*)SCD_DATA_STRUCT_tab[targetNum]._addr;
+        *xtemp = cz_atol((const char*)paraPtr);
     }
     if (SCD_DATA_STRUCT_tab[targetNum]._type == TYJ_int32_t)
     {
-        volatile int32_t *xtemp = (int32_t *)(void *)SCD_DATA_STRUCT_tab[targetNum]._addr;
-        *xtemp = cz_atol((const char *)paraPtr);
+        volatile int32_t* xtemp = (int32_t*)(void*)SCD_DATA_STRUCT_tab[targetNum]._addr;
+        *xtemp = cz_atol((const char*)paraPtr);
     }
     // 其余类型是不修改的
 }
@@ -577,13 +577,13 @@ static void SCD_CMD_SET(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *par
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCD_CMD_CONF, MEM_MACRO);
 #endif
-static void SCD_CMD_CONF(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *paraPtr, int16_t targetNum)
+static void SCD_CMD_CONF(struct SCD_CTRL_STRUCT* scd, volatile unsigned char* paraPtr, int16_t targetNum)
 {
     // targetNum即是序号
     if (targetNum >= 0 && targetNum < SCD_SEND_TAB_SIZE)
     {
         // 变量号现在转换即可
-        int varNum = cz_atol((const char *)paraPtr);
+        int varNum = cz_atol((const char*)paraPtr);
         //        if (varNum >= 0 && varNum < scd->structNum)
         {
             scd->structToSendTab[targetNum] = varNum;
@@ -594,11 +594,11 @@ static void SCD_CMD_CONF(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *pa
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCD_CMD_CHG, MEM_MACRO);
 #endif
-static void SCD_CMD_CHG(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *paraPtr, int16_t targetNum)
+static void SCD_CMD_CHG(struct SCD_CTRL_STRUCT* scd, volatile unsigned char* paraPtr, int16_t targetNum)
 {
     // 配置协议类型
     (void)targetNum;
-    int p_num = cz_atol((const char *)paraPtr);
+    int p_num = cz_atol((const char*)paraPtr);
     if (p_num >= 0 && p_num < SCD_PROTOCOL_NUM)
     {
         scd->sco_protocol_num_next = p_num;
@@ -608,10 +608,10 @@ static void SCD_CMD_CHG(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *par
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCD_CMD_DUMP, MEM_MACRO);
 #endif
-static void SCD_CMD_DUMP(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *paraPtr, int16_t targetNum)
+static void SCD_CMD_DUMP(struct SCD_CTRL_STRUCT* scd, volatile unsigned char* paraPtr, int16_t targetNum)
 {
     scd->dumpTarget = targetNum;
-    int p_num = cz_atol((const char *)paraPtr);
+    int p_num = cz_atol((const char*)paraPtr);
     if (p_num <= 0)
     {
         p_num = 1;
@@ -626,28 +626,28 @@ static void SCD_CMD_DUMP(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *pa
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCD_CMD_CALL, MEM_MACRO);
 #endif
-static void SCD_CMD_CALL(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *paraPtr, int16_t targetNum)
+static void SCD_CMD_CALL(struct SCD_CTRL_STRUCT* scd, volatile unsigned char* paraPtr, int16_t targetNum)
 {
     uint16_t judgeType = (scd->_unit_struct[targetNum]._type) & 0xffu;
     if (judgeType == TYJ_function)
     {
         // 避免打错直接down掉，还是加入一次校验
-        int para = cz_atol((const char *)paraPtr);
+        int para = cz_atol((const char*)paraPtr);
         typedef void (*funcPtr_t)(int32_t);
-        funcPtr_t funcPtr = (funcPtr_t)(void *)scd->_unit_struct[targetNum]._addr;
+        funcPtr_t funcPtr = (funcPtr_t)(void*)scd->_unit_struct[targetNum]._addr;
         (*funcPtr)(para);
     }
 }
 
 // 支持的命令
-static const char *SCD_CMD_TAB[SCD_CMD_NUM] = {"set", "conf", "chg", "dump", "call"};
-static void (*SCD_CMD_FCNS[SCD_CMD_NUM])(struct SCD_CTRL_STRUCT *scd, volatile unsigned char *paraPtr,
-                                         int16_t targetNum) = {SCD_CMD_SET, SCD_CMD_CONF, SCD_CMD_CHG, SCD_CMD_DUMP, SCD_CMD_CALL};
+static const char* SCD_CMD_TAB[SCD_CMD_NUM] = { "set", "conf", "chg", "dump", "call" };
+static void (*SCD_CMD_FCNS[SCD_CMD_NUM])(struct SCD_CTRL_STRUCT* scd, volatile unsigned char* paraPtr,
+    int16_t targetNum) = { SCD_CMD_SET, SCD_CMD_CONF, SCD_CMD_CHG, SCD_CMD_DUMP, SCD_CMD_CALL };
 
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCD_cmd_handle, MEM_MACRO);
 #endif
-static void SCD_cmd_handle(struct SCD_CTRL_STRUCT *scd)
+static void SCD_cmd_handle(struct SCD_CTRL_STRUCT* scd)
 {
     volatile unsigned char(*recBuff)[SCD_REVBUFF_SIZE] = scd->_recBuff;
     // 开头可有特殊字符
@@ -721,7 +721,7 @@ static void SCD_cmd_handle(struct SCD_CTRL_STRUCT *scd)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCD_Rev1Byte, MEM_MACRO);
 #endif
-void SCD_Rev1Byte(struct SCD_CTRL_STRUCT *scd, uint16_t data)
+void SCD_Rev1Byte(struct SCD_CTRL_STRUCT* scd, uint16_t data)
 {
     volatile unsigned char(*recBuff)[SCD_REVBUFF_SIZE] = scd->_recBuff;
     if (data == '!')
@@ -778,15 +778,15 @@ void SCD_Rev1Byte(struct SCD_CTRL_STRUCT *scd, uint16_t data)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCO_get, MEM_MACRO);
 #endif
-static uint16_t SCO_get(struct SCD_CTRL_STRUCT *scd)
+static uint16_t SCO_get(struct SCD_CTRL_STRUCT* scd)
 {
     // 兼容VOFA的just float
 #define SCO_STARTBYTE_NUM 0
 #define SCO_ENDBYTE_NUM 4
 
     // 起始位和结束位定义
-    const unsigned char startByte[SCO_STARTBYTE_NUM + 1] = {0x00};
-    const unsigned char endByte[SCO_ENDBYTE_NUM + 1] = {0x00, 0x00, 0x80, 0x7f};
+    const unsigned char startByte[SCO_STARTBYTE_NUM + 1] = { 0x00 };
+    const unsigned char endByte[SCO_ENDBYTE_NUM + 1] = { 0x00, 0x00, 0x80, 0x7f };
 
     if (scd->structToSend == 0)
     {
@@ -827,25 +827,25 @@ static uint16_t SCO_get(struct SCD_CTRL_STRUCT *scd)
             {
                 // 一律转为float发送
                 uint16_t judgeType = (scd->_unit_struct[scd->structToSendTab[scd->structToSend - 1]]._type) & 0xffu;
-                void *tempCommonPtr = (void *)scd->_unit_struct[scd->structToSendTab[scd->structToSend - 1]]._addr;
+                void* tempCommonPtr = (void*)scd->_unit_struct[scd->structToSendTab[scd->structToSend - 1]]._addr;
                 if (judgeType == TYJ_uint16_t)
                 {
-                    uint16_t *tempPtr = (uint16_t *)tempCommonPtr;
+                    uint16_t* tempPtr = (uint16_t*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
                 else if (judgeType == TYJ_uint32_t)
                 {
-                    uint32_t *tempPtr = (uint32_t *)tempCommonPtr;
+                    uint32_t* tempPtr = (uint32_t*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
                 else if (judgeType == TYJ_int32_t)
                 {
-                    int32_t *tempPtr = (int32_t *)tempCommonPtr;
+                    int32_t* tempPtr = (int32_t*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
                 else if (judgeType == TYJ_float)
                 {
-                    float *tempPtr = (float *)tempCommonPtr;
+                    float* tempPtr = (float*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
                 else if (judgeType == TYJ_function)
@@ -855,11 +855,11 @@ static uint16_t SCO_get(struct SCD_CTRL_STRUCT *scd)
                 else
                 {
                     // 匹配不上就用int16类型
-                    int16_t *tempPtr = (int16_t *)tempCommonPtr;
+                    int16_t* tempPtr = (int16_t*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
             }
-            uint16_t *tempPtr = (uint16_t *)(void *)&(scd->tempBuff);
+            uint16_t* tempPtr = (uint16_t*)(void*)&(scd->tempBuff);
             tempPtr = &tempPtr[scd->byteToSend >> 1];
             if (scd->byteToSend++ & 0x1)
             {
@@ -883,13 +883,13 @@ static uint16_t SCO_get(struct SCD_CTRL_STRUCT *scd)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCO_VAR, MEM_MACRO);
 #endif
-static uint16_t SCO_VAR(struct SCD_CTRL_STRUCT *scd)
+static uint16_t SCO_VAR(struct SCD_CTRL_STRUCT* scd)
 {
 #define SCO_STARTBYTE_NUM1 0
 #define SCO_ENDBYTE_NUM1 4
 
     // 起始位和结束位定义
-    const unsigned char startByte[SCO_STARTBYTE_NUM1 + 1] = {0x00};
+    const unsigned char startByte[SCO_STARTBYTE_NUM1 + 1] = { 0x00 };
     static uint16_t checkUint16Sum = 0;
 
     if (scd->structToSend2 == 0)
@@ -938,25 +938,25 @@ static uint16_t SCO_VAR(struct SCD_CTRL_STRUCT *scd)
             {
                 // 一律转为float发送
                 uint16_t judgeType = (scd->_unit_struct[scd->structToSend2 - 1]._type) & 0xffu;
-                void *tempCommonPtr = (void *)scd->_unit_struct[scd->structToSend2 - 1]._addr;
+                void* tempCommonPtr = (void*)scd->_unit_struct[scd->structToSend2 - 1]._addr;
                 if (judgeType == TYJ_uint16_t)
                 {
-                    uint16_t *tempPtr = (uint16_t *)tempCommonPtr;
+                    uint16_t* tempPtr = (uint16_t*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
                 else if (judgeType == TYJ_uint32_t)
                 {
-                    uint32_t *tempPtr = (uint32_t *)tempCommonPtr;
+                    uint32_t* tempPtr = (uint32_t*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
                 else if (judgeType == TYJ_int32_t)
                 {
-                    int32_t *tempPtr = (int32_t *)tempCommonPtr;
+                    int32_t* tempPtr = (int32_t*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
                 else if (judgeType == TYJ_float)
                 {
-                    float *tempPtr = (float *)tempCommonPtr;
+                    float* tempPtr = (float*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
                 else if (judgeType == TYJ_function)
@@ -966,11 +966,11 @@ static uint16_t SCO_VAR(struct SCD_CTRL_STRUCT *scd)
                 else
                 {
                     // 匹配不上就用int16类型
-                    int16_t *tempPtr = (int16_t *)tempCommonPtr;
+                    int16_t* tempPtr = (int16_t*)tempCommonPtr;
                     scd->tempBuff = *tempPtr;
                 }
             }
-            uint16_t *tempPtr = (uint16_t *)(void *)&(scd->tempBuff);
+            uint16_t* tempPtr = (uint16_t*)(void*)&(scd->tempBuff);
             tempPtr = &tempPtr[scd->byteToSend2 >> 1];
             if (scd->byteToSend2++ & 0x1)
             {
@@ -998,7 +998,7 @@ static uint16_t SCO_VAR(struct SCD_CTRL_STRUCT *scd)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCO_DEBUG, MEM_MACRO);
 #endif
-static uint16_t SCO_DEBUG(struct SCD_CTRL_STRUCT *scd)
+static uint16_t SCO_DEBUG(struct SCD_CTRL_STRUCT* scd)
 {
     // debug用，只会发0
     (void)scd;
@@ -1015,7 +1015,7 @@ static uint16_t SCO_DEBUG(struct SCD_CTRL_STRUCT *scd)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCO_DUMP, MEM_MACRO);
 #endif
-static uint16_t SCO_DUMP(struct SCD_CTRL_STRUCT *scd)
+static uint16_t SCO_DUMP(struct SCD_CTRL_STRUCT* scd)
 {
 #define SCO_ENDBYTE_NUM2 8
 
@@ -1098,25 +1098,25 @@ static uint16_t SCO_DUMP(struct SCD_CTRL_STRUCT *scd)
             {
                 // 一律转为float发送
                 uint16_t judgeType = (scd->_unit_struct[scd->dumpTarget]._type) & 0xffu;
-                void *tempCommonPtr = (void *)scd->_unit_struct[scd->dumpTarget]._addr;
+                void* tempCommonPtr = (void*)scd->_unit_struct[scd->dumpTarget]._addr;
                 if (judgeType == TYJ_uint16_t)
                 {
-                    uint16_t *tempPtr = (uint16_t *)tempCommonPtr;
+                    uint16_t* tempPtr = (uint16_t*)tempCommonPtr;
                     scd->tempBuff = tempPtr[scd->structToSend3];
                 }
                 else if (judgeType == TYJ_uint32_t)
                 {
-                    uint32_t *tempPtr = (uint32_t *)tempCommonPtr;
+                    uint32_t* tempPtr = (uint32_t*)tempCommonPtr;
                     scd->tempBuff = tempPtr[scd->structToSend3];
                 }
                 else if (judgeType == TYJ_int32_t)
                 {
-                    int32_t *tempPtr = (int32_t *)tempCommonPtr;
+                    int32_t* tempPtr = (int32_t*)tempCommonPtr;
                     scd->tempBuff = tempPtr[scd->structToSend3];
                 }
                 else if (judgeType == TYJ_float)
                 {
-                    float *tempPtr = (float *)tempCommonPtr;
+                    float* tempPtr = (float*)tempCommonPtr;
                     scd->tempBuff = tempPtr[scd->structToSend3];
                 }
                 else if (judgeType == TYJ_function)
@@ -1126,11 +1126,11 @@ static uint16_t SCO_DUMP(struct SCD_CTRL_STRUCT *scd)
                 else
                 {
                     // 匹配不上就用int16类型
-                    int16_t *tempPtr = (int16_t *)tempCommonPtr;
+                    int16_t* tempPtr = (int16_t*)tempCommonPtr;
                     scd->tempBuff = tempPtr[scd->structToSend3];
                 }
             }
-            uint16_t *tempPtr = (uint16_t *)(void *)&(scd->tempBuff);
+            uint16_t* tempPtr = (uint16_t*)(void*)&(scd->tempBuff);
             tempPtr = &tempPtr[scd->byteToSend3 >> 1];
             if (scd->byteToSend3++ & 0x1)
             {
@@ -1159,7 +1159,7 @@ static uint16_t SCO_DUMP(struct SCD_CTRL_STRUCT *scd)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(SCO_PRINT, MEM_MACRO);
 #endif
-static uint16_t SCO_PRINT(struct SCD_CTRL_STRUCT *scd)
+static uint16_t SCO_PRINT(struct SCD_CTRL_STRUCT* scd)
 {
 #define SCO_ENDBYTE_NUM3 2
 
@@ -1196,16 +1196,16 @@ static uint16_t SCO_PRINT(struct SCD_CTRL_STRUCT *scd)
     return scd->_endbyte3[scd->byteToSend4++];
 }
 
-static uint16_t (*SCD_PROTOCOL_FCNS[SCD_PROTOCOL_NUM])(struct SCD_CTRL_STRUCT *scd) = {SCO_get,
+static uint16_t(*SCD_PROTOCOL_FCNS[SCD_PROTOCOL_NUM])(struct SCD_CTRL_STRUCT* scd) = { SCO_get,
                                                                                        SCO_VAR,
                                                                                        SCO_DEBUG,
                                                                                        SCO_DUMP,
-                                                                                       SCO_PRINT};
+                                                                                       SCO_PRINT };
 
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(scd_send1Byte, MEM_MACRO);
 #endif
-uint16_t scd_send1Byte(struct SCD_CTRL_STRUCT *scd)
+uint16_t scd_send1Byte(struct SCD_CTRL_STRUCT* scd)
 {
     uint16_t ret;
     ret = SCD_PROTOCOL_FCNS[scd->sco_protocol_num](scd);
@@ -1229,7 +1229,7 @@ uint16_t scd_send1Byte(struct SCD_CTRL_STRUCT *scd)
 #if SCD_IF_USE_RAM_FUNCS
 #pragma CODE_SECTION(scd_print, MEM_MACRO);
 #endif
-uint16_t scd_print(struct SCD_CTRL_STRUCT *scd, const char *printDataPtr)
+uint16_t scd_print(struct SCD_CTRL_STRUCT* scd, const char* printDataPtr)
 {
     if (scd->isPrintBusyFlg)
     {
@@ -1237,6 +1237,30 @@ uint16_t scd_print(struct SCD_CTRL_STRUCT *scd, const char *printDataPtr)
     }
     int chrCnt = 0;
     while (printDataPtr[chrCnt] != 0)
+    {
+        scd->_printBuff[chrCnt] = printDataPtr[chrCnt];
+        chrCnt++;
+        if (chrCnt == SCD_PRINTBUFF_SIZE)
+        {
+            break;
+        }
+    }
+    scd->isPrintBusyFlg = chrCnt;
+
+    return 0;
+}
+
+#if SCD_IF_USE_RAM_FUNCS
+#pragma CODE_SECTION(scd_print2, MEM_MACRO);
+#endif
+uint16_t scd_print2(struct SCD_CTRL_STRUCT* scd, const char* printDataPtr, int len)
+{
+    if (scd->isPrintBusyFlg)
+    {
+        return 1;
+    }
+    int chrCnt = 0;
+    while (chrCnt < len)
     {
         scd->_printBuff[chrCnt] = printDataPtr[chrCnt];
         chrCnt++;

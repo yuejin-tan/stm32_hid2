@@ -24,7 +24,6 @@
 #include "memorymap.h"
 #include "quadspi.h"
 #include "ramecc.h"
-#include "sdmmc.h"
 #include "spi.h"
 #include "usart.h"
 #include "usb_device.h"
@@ -128,18 +127,21 @@ int main(void)
   MX_DMA_Init();
   MX_QUADSPI_Init();
   MX_RAMECC_Init();
-//  MX_SDMMC1_SD_Init();
   MX_SPI1_Init();
   MX_SPI4_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_USB_DEVICE_Init();
-//  MX_USB_HOST_Init();
-//  MX_FDCAN1_Init();
-//  MX_ETH_Init();
+  MX_USB_HOST_Init();
+  MX_FDCAN1_Init();
+  MX_ETH_Init();
   /* USER CODE BEGIN 2 */
 
   bsp_init_scd();
+
+  HAL_Delay(1);
+
+  printf("init fin!\n");
 
   /* USER CODE END 2 */
 
@@ -147,6 +149,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+    printf("%d\n", HAL_GetTick());
+    LL_mDelay(200);
+
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
 

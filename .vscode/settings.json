@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "scd_inc.h": "c"
+        "scd_inc.h": "c",
+        "scd_cfg.h": "c",
+        "main.h": "c"
     }
 }

@@ -59,8 +59,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_exti.h \
  ../Core/Inc/dma.h ../Core/Inc/main.h ../Core/Inc/eth.h \
  ../Core/Inc/fdcan.h ../Core/Inc/memorymap.h ../Core/Inc/quadspi.h \
- ../Core/Inc/ramecc.h ../Core/Inc/sdmmc.h ../Core/Inc/spi.h \
- ../Core/Inc/usart.h ../USB_DEVICE/App/usb_device.h \
+ ../Core/Inc/ramecc.h ../Core/Inc/spi.h ../Core/Inc/usart.h \
+ ../USB_DEVICE/App/usb_device.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  ../USB_DEVICE/Target/usbd_conf.h ../USB_HOST/App/usb_host.h \
  ../Core/Inc/gpio.h ../Core/Inc/bsp_init.h
@@ -130,7 +130,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/memorymap.h:
 ../Core/Inc/quadspi.h:
 ../Core/Inc/ramecc.h:
-../Core/Inc/sdmmc.h:
 ../Core/Inc/spi.h:
 ../Core/Inc/usart.h:
 ../USB_DEVICE/App/usb_device.h:
