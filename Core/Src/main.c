@@ -15,8 +15,8 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
+  /* USER CODE END Header */
+  /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
 #include "eth.h"
@@ -32,7 +32,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "usbd_hid.h"
 #include "bsp_init.h"
 
 /* USER CODE END Includes */
@@ -125,12 +125,12 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
+  MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
   MX_QUADSPI_Init();
   MX_RAMECC_Init();
   MX_SPI1_Init();
   MX_SPI4_Init();
-  MX_USART1_UART_Init();
-  MX_USART2_UART_Init();
   MX_USB_DEVICE_Init();
   MX_USB_HOST_Init();
   MX_FDCAN1_Init();
@@ -147,11 +147,35 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  uint8_t HID_Buffer[4];
+
   while (1)
   {
+    extern USBD_HandleTypeDef hUsbDeviceFS;
 
-    printf("%d\n", HAL_GetTick());
-    LL_mDelay(200);
+    if (test1)
+    {
+      HID_Buffer[1] = test1;
+      test1 = 0;
+
+      USBD_HID_SendReport(&hUsbDeviceFS, HID_Buffer, sizeof(HID_Buffer));
+
+      HID_Buffer[1] = 0;
+    }
+
+    if (test2)
+    {
+      HID_Buffer[2] = test2;
+      test2 = 0;
+
+      USBD_HID_SendReport(&hUsbDeviceFS, HID_Buffer, sizeof(HID_Buffer));
+
+      HID_Buffer[2] = 0;
+    }
+
+    // printf("%u\n", HAL_GetTick());
+    // LL_mDelay(200);
 
     /* USER CODE END WHILE */
     MX_USB_HOST_Process();
@@ -167,8 +191,8 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
 
   /** Supply configuration update enable
   */
@@ -178,12 +202,12 @@ void SystemClock_Config(void)
   */
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-  while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
+  while (!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48 | RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_DIV1;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
@@ -204,9 +228,9 @@ void SystemClock_Config(void)
 
   /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
-                              |RCC_CLOCKTYPE_D3PCLK1|RCC_CLOCKTYPE_D1PCLK1;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+    | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2
+    | RCC_CLOCKTYPE_D3PCLK1 | RCC_CLOCKTYPE_D1PCLK1;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
@@ -229,7 +253,7 @@ void SystemClock_Config(void)
 
 void MPU_Config(void)
 {
-  MPU_Region_InitTypeDef MPU_InitStruct = {0};
+  MPU_Region_InitTypeDef MPU_InitStruct = { 0 };
 
   /* Disables the MPU */
   HAL_MPU_Disable();
@@ -305,11 +329,11 @@ void Error_Handler(void)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t *file, uint32_t line)
+void assert_failed(uint8_t* file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+     /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
